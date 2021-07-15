@@ -3,6 +3,7 @@ package com.teamdev.myapplication
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.view.WindowInsets
 
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
@@ -84,7 +85,7 @@ abstract class BaseActivity<T : ViewDataBinding?>(protected var binding: T? = nu
         }
 //        val controller = window.insetsController
 //        if (controller != null) {
-//            controller.hide(WindowInsets.Type.statusBars() or WindowInsets.Type.navigationBars())
+//            controller.hide(WindowInsets.Builder.statusBars() or WindowInsets.Type.navigationBars())
 //            controller.systemBarsBehavior =
 //                    WindowInsetsController.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
 //        }

@@ -53,6 +53,7 @@ class MusicService() : Service() {
         filter.addAction(Const.ACTION_CANCEL)
         filter.addAction(Const.ACTION_UPDATE_SONG_TITLE)
         registerReceiver(musicReceiver, filter)
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
