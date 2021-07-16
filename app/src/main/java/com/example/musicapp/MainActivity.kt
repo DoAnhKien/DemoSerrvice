@@ -86,7 +86,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
             updateThePlayPauseIconForUi()
             setTitleForSong()
             handler.postDelayed(this, 150)
-//            setTitleForSong()
         }
     }
 

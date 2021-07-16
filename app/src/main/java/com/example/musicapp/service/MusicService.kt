@@ -67,7 +67,7 @@ class MusicService() : Service() {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     private fun pushNotification() {
-
+        Log.d(TAG, "pushNotification: ")
         val nextIntent = Intent(Const.ACTION_NEXT)
         val nextPendingIntent = PendingIntent.getBroadcast(
             this,
@@ -199,5 +199,6 @@ class MusicService() : Service() {
             }
         }
     }
+
 
 }
