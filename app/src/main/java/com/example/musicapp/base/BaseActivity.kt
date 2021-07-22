@@ -1,4 +1,4 @@
-package com.teamdev.myapplication
+package com.example.musicapp.base
 
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +9,7 @@ import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+
 
 
 abstract class BaseActivity<T : ViewDataBinding?>(protected var binding: T? = null) :
@@ -24,7 +25,7 @@ abstract class BaseActivity<T : ViewDataBinding?>(protected var binding: T? = nu
             return
         }*/
         this.binding = DataBindingUtil.setContentView<T>(this, this.initLayout())!!
-        this.viewRoot = this.binding!!.getRoot()
+        this.viewRoot = this.binding!!.root
 
         /*
         * FullScreen

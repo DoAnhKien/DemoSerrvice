@@ -1,4 +1,4 @@
-package com.teamdev.myapplication
+package com.example.musicapp.base
 
 import android.app.Activity
 import android.content.Context
@@ -21,7 +21,7 @@ class StatusBarUtil {
             }
             setWindowFlag(activity, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, true)
             activity.window.decorView.systemUiVisibility =
-                    View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             if (Build.VERSION.SDK_INT >= 21) {
                 setWindowFlag(activity, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS, false)
                 activity.window.statusBarColor = Color.TRANSPARENT
@@ -38,17 +38,21 @@ class StatusBarUtil {
             // make full transparent statusBar
 
             // make full transparent statusBar
-            setWindowFlag(activity, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                    or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true)
-            var visibility = View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+            setWindowFlag(
+                activity, WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
+                        or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION, true
+            )
+            var visibility =
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
             visibility = visibility or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-            window.getDecorView().setSystemUiVisibility(visibility)
+            window.decorView.systemUiVisibility = visibility
             if (Build.VERSION.SDK_INT >= 21) {
                 var windowManager = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                windowManager = windowManager or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
+                windowManager =
+                    windowManager or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
                 setWindowFlag(activity, windowManager, false)
-                window.setStatusBarColor(Color.TRANSPARENT)
-                window.setNavigationBarColor(Color.TRANSPARENT)
+                window.statusBarColor = Color.TRANSPARENT
+                window.navigationBarColor = Color.TRANSPARENT
             }
         }
 
@@ -80,9 +84,12 @@ class StatusBarUtil {
         fun getNavigationBarHeight(context: Context?): Int {
             context?.let {
                 val resources: Resources = context.resources
-                val resId: Int = resources.getIdentifier("navigation_bar_height", "dimen", "android")
-                val hasNavBarId: Int = resources.getIdentifier("config_showNavigationBar",
-                        "bool", "android")
+                val resId: Int =
+                    resources.getIdentifier("navigation_bar_height", "dimen", "android")
+                val hasNavBarId: Int = resources.getIdentifier(
+                    "config_showNavigationBar",
+                    "bool", "android"
+                )
                 return if (resId > 0 && hasNavBarId > 0 && resources.getBoolean(hasNavBarId)) {
                     resources.getDimensionPixelSize(resId)
                 } else 0

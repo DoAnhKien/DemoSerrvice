@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="songItem"
+            type="com.example.musicapp.model.SongItem" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_item_song"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="3dp">
+
+            <ImageView
+                android:id="@+id/imv_item_image_song"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:background="@color/color_image_item_song"
+                android:padding="15dp"
+                android:src="@drawable/ic_song">
+
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_item_name_song"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="10dp"
+                    android:singleLine="true"
+                    android:text="@{songItem.songName}"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_item_artist_song"
+                    android:layout_width="match_parent"
+                    android:layout_height="25dp"
+                    android:layout_marginTop="-10dp"
+                    android:paddingLeft="10dp"
+                    android:text="@{songItem.author}"
+                    android:textColor="@android:color/white" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imv_animation"
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="15dp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

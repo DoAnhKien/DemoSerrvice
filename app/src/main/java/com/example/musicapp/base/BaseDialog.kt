@@ -1,4 +1,4 @@
-package com.teamdev.myapplication
+package com.example.musicapp.base
 
 import android.app.Dialog
 import android.content.Context
@@ -17,9 +17,9 @@ import java.lang.Exception
 
 abstract class BaseDialog<T : ViewDataBinding?> {
 
-    protected var layoutBinding: T? = null
-    protected lateinit var viewRoot: View
-    protected var dialog: Dialog? = null
+    private var layoutBinding: T? = null
+    private lateinit var viewRoot: View
+    private var dialog: Dialog? = null
 
     /*
     * create bắt buộc phải được gọi
@@ -87,7 +87,8 @@ abstract class BaseDialog<T : ViewDataBinding?> {
     /*
     * Style cho dialog nếu có
     * */
-    open  @StyleRes fun styleDialog(): Int? {
+    @StyleRes
+    open fun styleDialog(): Int? {
         return null
     }
 

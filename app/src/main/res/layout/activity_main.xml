@@ -39,7 +39,7 @@
             android:layout_width="240dp"
             android:layout_height="240dp"
             android:layout_centerInParent="true"
-            android:src="@drawable/cd_music" />
+            android:src="@drawable/ic_queue_music" />
 
 
         <androidx.appcompat.widget.LinearLayoutCompat

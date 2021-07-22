@@ -1,4 +1,4 @@
-package com.teamdev.myapplication
+package com.example.musicapp.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,7 @@ abstract class BaseFragment<T : ViewDataBinding?> (protected var layoutBinding: 
         savedInstanceState: Bundle?
     ): View? {
         this.layoutBinding = DataBindingUtil.inflate<T>(inflater, this.initLayout(), container, false)
-        this.viewRoot = layoutBinding!!.getRoot()
+        this.viewRoot = layoutBinding!!.root
 
         /*
         * 1
@@ -29,6 +29,7 @@ abstract class BaseFragment<T : ViewDataBinding?> (protected var layoutBinding: 
         * 2
         * */
         this.initViews()
+        this.setOnClickForViews()
 
         return this.viewRoot
     }
@@ -36,6 +37,8 @@ abstract class BaseFragment<T : ViewDataBinding?> (protected var layoutBinding: 
     protected abstract fun initLayout(): Int
 
     protected abstract fun init()
+
+    protected abstract fun setOnClickForViews()
 
     protected abstract fun initViews()
 

@@ -1,18 +1,10 @@
 package com.example.musicapp.service
 
-import android.R
 import android.app.IntentService
-import android.app.Notification
 import android.content.Intent
-import android.os.Build
-import android.os.PowerManager
-import android.os.PowerManager.WakeLock
-import android.os.SystemClock
 import android.util.Log
-import androidx.annotation.Nullable
-import androidx.core.app.NotificationCompat
-import com.example.musicapp.TYPE_ONE
-import com.example.musicapp.TYPE_TWO
+import com.example.musicapp.ui.activities.TYPE_ONE
+import com.example.musicapp.ui.activities.TYPE_TWO
 
 
 class ExampleIntentService : IntentService("ExampleIntentService") {

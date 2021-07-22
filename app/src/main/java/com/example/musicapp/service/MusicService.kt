@@ -14,7 +14,7 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
-import com.example.musicapp.MainActivity
+import com.example.musicapp.ui.activities.MainActivity
 import com.example.musicapp.R
 import com.example.musicapp.media.MediaManager
 import com.example.musicapp.util.Const
@@ -41,9 +41,9 @@ class MusicService() : Service() {
     override fun onCreate() {
 
         super.onCreate()
-        remoteViews = RemoteViews(packageName, R.layout.notification_music)
+        remoteViews = RemoteViews(packageName, R.layout.layout_notification_music)
         Log.d(TAG, "onCreate")
-        mediaManager = MediaManager(this)
+        mediaManager = MediaManager(this).getInstance(this)
         musicReceiver = MusicReceiver()
         val filter = IntentFilter()
         filter.addAction(Const.ACTION_NEXT)
@@ -58,7 +58,7 @@ class MusicService() : Service() {
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        mediaManager?.play()
+//        mediaManager?.play()
         updateTheSongTitle()
         pushNotification()
         Log.d(TAG, "onStartCommand: ")
@@ -157,7 +157,7 @@ class MusicService() : Service() {
         }
     }
 
-    fun updateTheSongTitle(){
+    fun updateTheSongTitle() {
         remoteViews!!.setTextViewText(R.id.tvSongTitle, mediaManager?.getCurrentSong()?.songName)
     }
 
@@ -193,7 +193,7 @@ class MusicService() : Service() {
                     updateTheSongTitle()
                     startForeground(1, mBuilder?.build())
                 }
-                Const.ACTION_UPDATE_SONG_TITLE ->{
+                Const.ACTION_UPDATE_SONG_TITLE -> {
 
                 }
             }

@@ -15,12 +15,26 @@ class MediaManager(private val context: Context) {
     private val arrSongs: MutableList<SongItem> = ArrayList<SongItem>()
     private var currentIndex = 0
     private var currentSong: SongItem? = null
+    private var mediaManager: MediaManager? = null
+
+
+    fun getInstance(context: Context): MediaManager? {
+        if (mediaManager == null) {
+            mediaManager = MediaManager(context)
+        }
+        return mediaManager
+    }
+
 
     init {
         Log.d(TAG, "kienda: ")
         getAllAudioFilesExternal()
         initPlayer()
         Log.d(TAG, "mmm ${arrSongs.size}")
+    }
+
+    fun getSongList(): MutableList<SongItem> {
+        return arrSongs
     }
 
     companion object {
@@ -129,24 +143,66 @@ class MediaManager(private val context: Context) {
         c!!.moveToFirst()
 
         arrSongs.clear()
-        val pathIndex = c!!.getColumnIndex(columnsName[0])
-        val fullName = c!!.getColumnIndex(columnsName[1])
-        val durationIndex = c!!.getColumnIndex(columnsName[2])
-        val authorIndex = c!!.getColumnIndex(columnsName[3])
-        val songNameIndex = c!!.getColumnIndex(columnsName[4])
+        val pathIndex = c.getColumnIndex(columnsName[0])
+        val fullName = c.getColumnIndex(columnsName[1])
+        val durationIndex = c.getColumnIndex(columnsName[2])
+        val authorIndex = c.getColumnIndex(columnsName[3])
+        val songNameIndex = c.getColumnIndex(columnsName[4])
 
-        while (!c!!.isAfterLast) {
+        while (!c.isAfterLast) {
             val item = SongItem(
-                c!!.getString(songNameIndex),
-                c!!.getString(pathIndex),
-                c!!.getString(durationIndex),
-                c!!.getString(authorIndex),
-                c!!.getString(fullName)
+                c.getString(songNameIndex),
+                c.getString(pathIndex),
+                c.getString(durationIndex),
+                c.getString(authorIndex),
+                c.getString(fullName)
             )
             arrSongs.add(item)
             c!!.moveToNext()
         }
-        c!!.close()
+        c.close()
+    }
+
+    fun getAllSongItemFromStorage(): MutableList<SongItem>? {
+        val mSongs: MutableList<SongItem>? = ArrayList<SongItem>()
+
+        val columnsName = arrayOf(
+            MediaStore.Audio.AudioColumns.DATA,
+            MediaStore.Audio.AudioColumns.DISPLAY_NAME,
+            MediaStore.Audio.AudioColumns.DURATION,
+            MediaStore.Audio.AudioColumns.ARTIST,
+            MediaStore.Audio.AudioColumns.TITLE
+        )
+        val c = context.contentResolver.query(
+            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+            columnsName,
+            null,
+            null,
+            null,
+            null
+        )
+        c!!.moveToFirst()
+
+        mSongs?.clear()
+        val pathIndex = c.getColumnIndex(columnsName[0])
+        val fullName = c.getColumnIndex(columnsName[1])
+        val durationIndex = c.getColumnIndex(columnsName[2])
+        val authorIndex = c.getColumnIndex(columnsName[3])
+        val songNameIndex = c.getColumnIndex(columnsName[4])
+
+        while (!c.isAfterLast) {
+            val item = SongItem(
+                c.getString(songNameIndex),
+                c.getString(pathIndex),
+                c.getString(durationIndex),
+                c.getString(authorIndex),
+                c.getString(fullName)
+            )
+            mSongs?.add(item)
+            c!!.moveToNext()
+        }
+        c.close()
+        return mSongs
     }
 
     fun getCurrentSong(): SongItem = arrSongs[currentIndex]

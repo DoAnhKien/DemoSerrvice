@@ -14,8 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicApp">
-        <activity android:name=".MainActivity2"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".ui.activities.SplashActivity"></activity>
+        <activity android:name=".ui.activities.MainActivity" />
+        <activity android:name=".ui.activities.MainActivity2" />
+        <activity android:name=".ui.activities.MainMusicActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,6 +27,7 @@
 
         <service android:name=".service.MusicService" />
         <service android:name=".service.ExampleIntentService" />
+
         <receiver
             android:name=".service.MusicService$MusicReceiver"
             tools:ignore="Instantiatable">
