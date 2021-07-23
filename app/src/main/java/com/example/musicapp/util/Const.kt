@@ -51,6 +51,7 @@ object Const {
     const val ACTION_CANCEL = "cancel_music"
     const val ACTION_UPDATE_SONG_TITLE = "update_Song_title_music"
     const val ACTION_PREVIOUS = "previous_music"
+    const val ACTION_PLAY_MUSIC_BY_POSITION = "play_music_position"
     const val ACTION_PAUSE_SONG = "ACTION_PAUSE_SONG"
     const val ACTION_STOP = "ACTION_STOP"
     const val KEY_SEND_PAUSE = "KEY_SEND_PAUSE"
@@ -60,4 +61,5 @@ object Const {
     const val NOTIFICATION_ID = 1234
     const val MEDIA_SHUFFLE = "MEDIA_SHUFFLE"
     const val MEDIA_CURRENT_STATE_LOOP = "MEDIA_CURRENT_STATE_LOOP"
+    const val MAIN_ACTIVITY_REQUEST_CODE = 10002
 }

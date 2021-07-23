@@ -54,11 +54,11 @@ class SongAdapter(private val handleMyOnclick: HandleMyOnclick) :
 
     class DiffCallback : DiffUtil.ItemCallback<SongItem>() {
         override fun areItemsTheSame(oldItem: SongItem, newItem: SongItem): Boolean {
-            return oldItem.path == newItem.path
+            return oldItem.dataPath == newItem.dataPath
         }
 
         override fun areContentsTheSame(oldItem: SongItem, newItem: SongItem): Boolean {
-            return oldItem.path == newItem.path
+            return oldItem.dataPath == newItem.dataPath
         }
     }
 

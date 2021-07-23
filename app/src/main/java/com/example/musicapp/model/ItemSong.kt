@@ -1,13 +1,13 @@
 package com.example.musicapp.model
 
 data class ItemSong(
-    private var dataPath: String? = null,
-    private var title: String? = null,
-    private var displayName: String? = null,
-    private var album: String? = null,
-    private var albumID: String? = null,
-    private var artist: String? = null,
-    private val duration: Int = 0,
-    private val isSelected: Boolean = false,
+     var dataPath: String? = null,
+     var title: String? = null,
+     var displayName: String? = null,
+     var album: String? = null,
+     var albumID: String? = null,
+     var artist: String? = null,
+     val duration: Int = 0,
+     val isSelected: Boolean = false,
 ) {
 }

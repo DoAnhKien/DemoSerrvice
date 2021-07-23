@@ -5,12 +5,9 @@ import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.os.Handler
 import android.os.Looper
-import android.widget.Toast
 import androidx.work.Worker
 import androidx.work.WorkerParameters
-import com.example.musicapp.ui.activities.MainActivity
 import com.example.musicapp.ui.activities.MainMusicActivity
-import com.example.musicapp.ui.activities.SplashActivity
 
 
 class MyWorker(

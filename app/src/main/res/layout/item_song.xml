@@ -45,7 +45,7 @@
                     android:gravity="center_vertical"
                     android:paddingLeft="10dp"
                     android:singleLine="true"
-                    android:text="@{songItem.songName}"
+                    android:text="@{songItem.title}"
                     android:textColor="@android:color/white"
                     android:textSize="16sp" />
 
@@ -55,7 +55,7 @@
                     android:layout_height="25dp"
                     android:layout_marginTop="-10dp"
                     android:paddingLeft="10dp"
-                    android:text="@{songItem.author}"
+                    android:text="@{songItem.artist}"
                     android:textColor="@android:color/white" />
 
             </LinearLayout>

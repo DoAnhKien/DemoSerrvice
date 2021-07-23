@@ -8,6 +8,7 @@ import android.content.ServiceConnection
 import android.content.pm.PackageManager
 import android.os.Handler
 import android.os.IBinder
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.Window
@@ -18,12 +19,12 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import com.example.musicapp.R
-import com.example.musicapp.adapter.TotalMusicAdapter
+import com.example.musicapp.adapter.ViewPagerMusicAdapter
 import com.example.musicapp.base.BaseActivity
 import com.example.musicapp.databinding.ActivityMainMusicBinding
-import com.example.musicapp.model.SongItem
 import com.example.musicapp.service.MusicService
 import com.google.android.material.navigation.NavigationView
+import kotlinx.android.synthetic.main.bottm_menu.*
 import kotlinx.android.synthetic.main.content_main.*
 import kotlinx.android.synthetic.main.top_menu.*
 
@@ -39,10 +40,16 @@ class MainMusicActivity : BaseActivity<ActivityMainMusicBinding>(),
         return musicService
     }
 
+    companion object{
+        private const val TAG = "MainMusicActivity"
+    }
+
     private val connection: ServiceConnection = object : ServiceConnection {
         override fun onServiceConnected(componentName: ComponentName, iBinder: IBinder) {
             val binder: MusicService.MusicBinder = iBinder as MusicService.MusicBinder
             musicService = binder.musicService
+            runOnUiThread { runnable }
+            Log.d(TAG, "onServiceConnected: ")
 
         }
 
@@ -80,6 +87,7 @@ class MainMusicActivity : BaseActivity<ActivityMainMusicBinding>(),
     }
 
     private fun startMusic() {
+        Log.d(TAG, "startMusic: ")
         val intent = Intent(this, MusicService::class.java)
         startService(intent)
         bindService(intent, connection, BIND_AUTO_CREATE)
@@ -89,13 +97,17 @@ class MainMusicActivity : BaseActivity<ActivityMainMusicBinding>(),
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_menu)
-        vpMain.adapter = TotalMusicAdapter(supportFragmentManager)
+        vpMain.adapter = ViewPagerMusicAdapter(supportFragmentManager)
         tabMain.setupWithViewPager(vpMain)
     }
 
     override fun setOnClickForViews() {
         imv_menu_drawer.setOnClickListener(this)
-
+        tv_bottom_title_song.setOnClickListener(this)
+        tv_bottom_name_artist.setOnClickListener(this)
+        imv_previous.setOnClickListener(this)
+        imv_pause_play.setOnClickListener(this)
+        imv_next.setOnClickListener(this)
     }
 
     override fun onRequestPermissionsResult(
@@ -111,6 +123,28 @@ class MainMusicActivity : BaseActivity<ActivityMainMusicBinding>(),
                 Toast.makeText(this, "you are so stupid", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    var runnable: Runnable = object : Runnable {
+        override fun run() {
+            updateThePlayPauseIconForUi()
+            setTitleForSong()
+            handler.postDelayed(this, 150)
+        }
+    }
+
+    fun updateThePlayPauseIconForUi() {
+        Log.d(TAG, "updateThePlayPauseIconForUi: ")
+        if (musicService?.getMediaPlayer()!!.isPlaying) {
+            imv_pause_play.setImageResource(R.drawable.ic_pause)
+            return
+        }
+        imv_pause_play.setImageResource(R.drawable.ic_play)
+    }
+
+
+    private fun setTitleForSong() {
+
     }
 
     private fun changeTheColorOfTheStatusBar() {

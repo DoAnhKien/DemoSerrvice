@@ -33,13 +33,56 @@
                 android:textStyle="bold" />
         </androidx.appcompat.widget.LinearLayoutCompat>
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imgMenu"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_below="@+id/ll1"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="30dp"
+            android:src="@drawable/ic_menu" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/imgCenter"
             android:layout_width="240dp"
             android:layout_height="240dp"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_queue_music" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="140dp"
+            android:src="@drawable/ic_cd_music" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_below="@id/imgCenter"
+            android:layout_marginTop="20sp">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvStartTime"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_above="@id/mainSeekBar"
+                android:layout_marginStart="10sp"
+                android:text="123"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvTotalTime"
+                android:layout_width="wrap_content"
+                android:layout_height="24dp"
+                android:layout_above="@id/mainSeekBar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10dp"
+                android:text="456"
+                android:textColor="@color/white" />
+
+            <SeekBar
+                android:id="@+id/mainSeekBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true" />
+        </RelativeLayout>
 
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -47,7 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="100dp"
+            android:layout_marginBottom="80dp"
             android:background="@color/colorImageDark">
 
             <androidx.appcompat.widget.LinearLayoutCompat
@@ -62,7 +105,6 @@
                     android:id="@+id/imgPrevious"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:background="@drawable/statte_image_buttom_layout"
                     android:contentDescription="imv_previous"
                     android:padding="5dp"
                     android:src="@drawable/ic_previous" />
@@ -73,7 +115,6 @@
                     android:layout_height="100dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:background="@drawable/statte_image_buttom_layout"
                     android:contentDescription="imv_pause_play"
                     android:padding="5dp"
                     android:src="@drawable/ic_pause" />
@@ -82,7 +123,6 @@
                     android:id="@+id/imgNext"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:background="@drawable/statte_image_buttom_layout"
                     android:contentDescription="imv_next"
                     android:padding="5dp"
                     android:src="@drawable/ic_next" />

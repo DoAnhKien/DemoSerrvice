@@ -7,7 +7,7 @@ import com.example.musicapp.ui.fragments.AlbumFragment
 import com.example.musicapp.ui.fragments.ArtistFragment
 import com.example.musicapp.ui.fragments.SongFragment
 
-class TotalMusicAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+class ViewPagerMusicAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
     private val pageTitles = listOf("SONG", "ALBUM", "ARTIST")
 
     override fun getItem(position: Int): Fragment {

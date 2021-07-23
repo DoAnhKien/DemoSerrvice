@@ -25,6 +25,9 @@ class MediaManager(private val context: Context) {
         return mediaManager
     }
 
+    fun setCurrentIndex(position: Int) {
+        currentIndex = position
+    }
 
     init {
         Log.d(TAG, "kienda: ")
@@ -56,7 +59,8 @@ class MediaManager(private val context: Context) {
             false
         }
         mPlayer!!.setOnCompletionListener {
-
+            currentIndex++
+            play()
         }
     }
 
@@ -71,13 +75,14 @@ class MediaManager(private val context: Context) {
     fun play() {
         try {
             mPlayer!!.reset()
-            mPlayer!!.setDataSource(context, Uri.parse(arrSongs[currentIndex].path))
+            mPlayer!!.setDataSource(context, Uri.parse(arrSongs[currentIndex].dataPath))
             mPlayer!!.prepare()
             playState = STATE_PLAYING
         } catch (e: IOException) {
             e.printStackTrace()
         }
     }
+
 
     operator fun next() {
         if (currentIndex >= arrSongs.size - 1) {
@@ -126,83 +131,124 @@ class MediaManager(private val context: Context) {
 
     private fun getAllAudioFilesExternal() {
         val columnsName = arrayOf(
-            MediaStore.Audio.AudioColumns.DATA,
-            MediaStore.Audio.AudioColumns.DISPLAY_NAME,
-            MediaStore.Audio.AudioColumns.DURATION,
-            MediaStore.Audio.AudioColumns.ARTIST,
-            MediaStore.Audio.AudioColumns.TITLE
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.DISPLAY_NAME,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ARTIST
         )
-        val c = context.contentResolver.query(
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-            columnsName,
-            null,
-            null,
-            null,
-            null
-        )
-        c!!.moveToFirst()
-
-        arrSongs.clear()
-        val pathIndex = c.getColumnIndex(columnsName[0])
-        val fullName = c.getColumnIndex(columnsName[1])
-        val durationIndex = c.getColumnIndex(columnsName[2])
-        val authorIndex = c.getColumnIndex(columnsName[3])
-        val songNameIndex = c.getColumnIndex(columnsName[4])
-
-        while (!c.isAfterLast) {
-            val item = SongItem(
-                c.getString(songNameIndex),
-                c.getString(pathIndex),
-                c.getString(durationIndex),
-                c.getString(authorIndex),
-                c.getString(fullName)
+        val cursor = context.contentResolver
+            .query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                null, null, null, null, null
             )
-            arrSongs.add(item)
-            c!!.moveToNext()
+        val indexData = cursor!!.getColumnIndex(columnsName[0])
+        val indexTitle = cursor!!.getColumnIndex(columnsName[1])
+        val indexDisPlay = cursor!!.getColumnIndex(columnsName[2])
+        val indexDuration = cursor!!.getColumnIndex(columnsName[3])
+        val indexAlbum = cursor!!.getColumnIndex(columnsName[4])
+        val indexAlbumId = cursor!!.getColumnIndex(columnsName[5])
+        val indexArtist = cursor!!.getColumnIndex(columnsName[6])
+        var data: String?
+        var title: String?
+        var display: String
+        var album: String?
+        var albumID: String?
+        var artist: String?
+        var duration: Int
+        cursor?.moveToFirst()
+        arrSongs.clear()
+        while (!cursor!!.isAfterLast) {
+            data = cursor.getString(indexData)
+            title = cursor.getString(indexTitle)
+            display = cursor.getString(indexDisPlay)
+            album = cursor.getString(indexAlbum)
+            albumID = cursor.getString(indexAlbumId)
+            artist = cursor.getString(indexArtist)
+            duration = cursor.getInt(indexDuration)
+            val extension = display.substring(display.lastIndexOf("."))
+            if (extension.equals(".mp3", ignoreCase = true)) {
+                arrSongs.add(
+                    SongItem(
+                        data,
+                        title,
+                        display,
+                        album,
+                        albumID,
+                        artist,
+                        duration,
+                        false
+                    )
+                )
+            }
+            Log.i(TAG, "extension:= $extension")
+            cursor.moveToNext()
         }
-        c.close()
+        cursor.close()
     }
 
     fun getAllSongItemFromStorage(): MutableList<SongItem>? {
-        val mSongs: MutableList<SongItem>? = ArrayList<SongItem>()
-
+        val mArrSongs: MutableList<SongItem> = ArrayList<SongItem>()
         val columnsName = arrayOf(
-            MediaStore.Audio.AudioColumns.DATA,
-            MediaStore.Audio.AudioColumns.DISPLAY_NAME,
-            MediaStore.Audio.AudioColumns.DURATION,
-            MediaStore.Audio.AudioColumns.ARTIST,
-            MediaStore.Audio.AudioColumns.TITLE
+            MediaStore.Audio.Media.DATA,
+            MediaStore.Audio.Media.TITLE,
+            MediaStore.Audio.Media.DISPLAY_NAME,
+            MediaStore.Audio.Media.DURATION,
+            MediaStore.Audio.Media.ALBUM,
+            MediaStore.Audio.Media.ALBUM_ID,
+            MediaStore.Audio.Media.ARTIST
         )
-        val c = context.contentResolver.query(
-            MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
-            columnsName,
-            null,
-            null,
-            null,
-            null
-        )
-        c!!.moveToFirst()
-
-        mSongs?.clear()
-        val pathIndex = c.getColumnIndex(columnsName[0])
-        val fullName = c.getColumnIndex(columnsName[1])
-        val durationIndex = c.getColumnIndex(columnsName[2])
-        val authorIndex = c.getColumnIndex(columnsName[3])
-        val songNameIndex = c.getColumnIndex(columnsName[4])
-
-        while (!c.isAfterLast) {
-            val item = SongItem(
-                c.getString(songNameIndex),
-                c.getString(pathIndex),
-                c.getString(durationIndex),
-                c.getString(authorIndex),
-                c.getString(fullName)
+        val cursor = context.contentResolver
+            .query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                null, null, null, null, null
             )
-            mSongs?.add(item)
-            c!!.moveToNext()
+        val indexData = cursor!!.getColumnIndex(columnsName[0])
+        val indexTitle = cursor!!.getColumnIndex(columnsName[1])
+        val indexDisPlay = cursor!!.getColumnIndex(columnsName[2])
+        val indexDuration = cursor!!.getColumnIndex(columnsName[3])
+        val indexAlbum = cursor!!.getColumnIndex(columnsName[4])
+        val indexAlbumId = cursor!!.getColumnIndex(columnsName[5])
+        val indexArtist = cursor!!.getColumnIndex(columnsName[6])
+        var data: String?
+        var title: String?
+        var display: String
+        var album: String?
+        var albumID: String?
+        var artist: String?
+        var duration: Int
+        cursor?.moveToFirst()
+        mArrSongs.clear()
+        while (!cursor!!.isAfterLast) {
+            data = cursor.getString(indexData)
+            title = cursor.getString(indexTitle)
+            display = cursor.getString(indexDisPlay)
+            album = cursor.getString(indexAlbum)
+            albumID = cursor.getString(indexAlbumId)
+            artist = cursor.getString(indexArtist)
+            duration = cursor.getInt(indexDuration)
+            val extension = display.substring(display.lastIndexOf("."))
+            if (extension.equals(".mp3", ignoreCase = true)) {
+                mArrSongs.add(
+                    SongItem(
+                        data,
+                        title,
+                        display,
+                        album,
+                        albumID,
+                        artist,
+                        duration,
+                        false
+                    )
+                )
+            }
+            Log.i(TAG, "extension:= $extension")
+            cursor.moveToNext()
         }
-        c.close()
-        return mSongs
+        cursor.close()
+        return mArrSongs
     }
 
     fun getCurrentSong(): SongItem = arrSongs[currentIndex]

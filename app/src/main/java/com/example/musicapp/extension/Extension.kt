@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.databinding.BindingAdapter
@@ -58,4 +59,9 @@ fun Long.convertAmountTimeToText(): String {
 @BindingAdapter("link")
 fun ImageView.setResourceByLink(link: String) {
     Glide.with(this).load(link).placeholder(R.mipmap.ic_launcher).into(this)
+}
+
+@BindingAdapter("link")
+fun TextView.setTexFromInt(number: Int) {
+    this.text = number.toString()
 }

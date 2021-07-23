@@ -52,13 +52,14 @@ class MusicService() : Service() {
         filter.addAction(Const.ACTION_PLAY)
         filter.addAction(Const.ACTION_CANCEL)
         filter.addAction(Const.ACTION_UPDATE_SONG_TITLE)
+        filter.addAction(Const.ACTION_PLAY_MUSIC_BY_POSITION)
         registerReceiver(musicReceiver, filter)
 
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-//        mediaManager?.play()
+        mediaManager?.play()
         updateTheSongTitle()
         pushNotification()
         Log.d(TAG, "onStartCommand: ")
@@ -158,7 +159,7 @@ class MusicService() : Service() {
     }
 
     fun updateTheSongTitle() {
-        remoteViews!!.setTextViewText(R.id.tvSongTitle, mediaManager?.getCurrentSong()?.songName)
+        remoteViews!!.setTextViewText(R.id.tvSongTitle, mediaManager?.getCurrentSong()?.title)
     }
 
     inner class MusicReceiver : BroadcastReceiver() {
@@ -195,6 +196,12 @@ class MusicService() : Service() {
                 }
                 Const.ACTION_UPDATE_SONG_TITLE -> {
 
+                }
+                Const.ACTION_PLAY_MUSIC_BY_POSITION -> {
+                    mediaManager?.play()
+                    updateTheSongTitle()
+                    updateTheNotificationIcon()
+                    startForeground(1, mBuilder?.build())
                 }
             }
         }
