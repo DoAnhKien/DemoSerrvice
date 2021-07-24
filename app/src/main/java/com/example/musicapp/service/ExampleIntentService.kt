@@ -11,7 +11,6 @@ class ExampleIntentService : IntentService("ExampleIntentService") {
     private val TAG = "kienda"
 
     override fun onHandleIntent(p0: Intent?) {
-
         when(p0?.getIntExtra("type",0)){
             TYPE_ONE ->{
                 for (i in 1..5) {
@@ -26,10 +25,6 @@ class ExampleIntentService : IntentService("ExampleIntentService") {
                 }
             }
         }
-
-
-
-
     }
 
 }

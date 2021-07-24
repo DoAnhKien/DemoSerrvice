@@ -14,18 +14,43 @@
         android:orientation="vertical"
         tools:context=".ui.activities.AllSongActivity">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDetailSongName"
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="20sp"
-            android:gravity="center"
-            android:lines="1"
-            android:maxLines="1"
-            android:text="All Songs"
-            android:textColor="@color/white"
-            android:textSize="17dp"
-            android:textStyle="bold" />
+            android:layout_marginEnd="20dp"
+            android:orientation="horizontal">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDetailSongName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="All Songs"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvMiniGame"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:lines="1"
+                android:maxLines="1"
+                android:text="Mini game"
+                android:textColor="@color/white"
+                android:textSize="17dp"
+                android:textStyle="bold" />
+
+
+        </RelativeLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAllSong"

@@ -1,12 +1,13 @@
 package com.example.musicapp.ui.activities
 
 import android.Manifest
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Handler
 import android.os.IBinder
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.view.Window
@@ -17,6 +18,7 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.musicapp.R
 import com.example.musicapp.base.BaseActivity
 import com.example.musicapp.databinding.ActivityMainBinding
@@ -87,6 +89,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
             )
         } else {
             startMusic()
+
         }
     }
 
@@ -169,7 +172,41 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
             R.id.imgMenu -> {
                 sendMessage()
             }
+            R.id.imgRepeat -> {
+                changeStateLoop()
+            }
         }
+    }
+
+    fun getImageSong(context: Context, albumID: String): Bitmap? {
+        val sArtworkUri = Uri
+            .parse("content://media/external/audio/albumart")
+        val albumArtUri = ContentUris.withAppendedId(sArtworkUri, albumID!!.toLong())
+        var bitmap: Bitmap? = null
+        try {
+            bitmap = MediaStore.Images.Media.getBitmap(
+                context.contentResolver, albumArtUri
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return bitmap
+    }
+
+    private fun changeImageViewOfThePicture() {
+        Glide.with(this)
+            .load(getImageSong(this, musicService?.getMediaManager()?.getCurrentSong()!!.albumID))
+            .into(binding!!.imgCenter)
+    }
+
+    private fun changeStateLoop() {
+        if (!musicService?.getMediaManager()!!.isLoop()) {
+            musicService?.getMediaManager()!!.setLoop(true)
+            binding?.imgRepeat?.setImageResource(R.drawable.ic_repeat_no)
+            return
+        }
+        musicService?.getMediaManager()!!.setLoop(false)
+        binding?.imgRepeat?.setImageResource(R.drawable.ic_repeat_one)
     }
 
     fun sendMessage() {
@@ -241,6 +278,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
         binding?.imgPausePlay?.setOnClickListener(this)
         binding?.imgPrevious?.setOnClickListener(this)
         binding?.imgMenu?.setOnClickListener(this)
+        binding?.imgRepeat?.setOnClickListener(this)
     }
 
     private fun runAnimationForTextView() {

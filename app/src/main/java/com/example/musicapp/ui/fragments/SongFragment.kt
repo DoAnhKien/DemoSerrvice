@@ -27,30 +27,30 @@ class SongFragment : BaseFragment<FragmentSongBinding>(), HandleMyOnclick {
     }
 
     override fun initViews() {
-//        Log.d(
-//            "mmm",
-//            "initViews1: ${
-//                if (context != null)
-//                    MediaManager(requireActivity()!!.applicationContext).getInstance(requireActivity().applicationContext)!!
-//                        .getAllSongItemFromStorage()!!.size
-//                else return
-//            }"
-//        )
+        Log.d(
+            "mmm",
+            "initViews1: ${
+                if (context != null)
+                    MediaManager(requireActivity()!!.applicationContext).getInstance(requireActivity().applicationContext)!!
+                        .getAllSongItemFromStorage()!!.size
+                else return
+            }"
+        )
     }
 
     private fun setDataForRecyclerView() {
-//        val songAdapter = SongAdapter(this)
-//        layoutBinding.let { it ->
-//            it?.rvSong.let {
-//                it?.adapter = songAdapter
-//                it?.layoutManager = LinearLayoutManager(requireContext())
-//                it?.setHasFixedSize(true)
-//            }
-//        }
-//        songAdapter.submitList(
-//            MediaManager(requireActivity()!!.applicationContext).getInstance(requireActivity().applicationContext)!!
-//                .getAllSongItemFromStorage()
-//        )
+        val songAdapter = SongAdapter(this)
+        layoutBinding.let { it ->
+            it?.rvSong.let {
+                it?.adapter = songAdapter
+                it?.layoutManager = LinearLayoutManager(requireContext())
+                it?.setHasFixedSize(true)
+            }
+        }
+        songAdapter.submitList(
+            MediaManager(requireActivity()!!.applicationContext).getInstance(requireActivity().applicationContext)!!
+                .getAllSongItemFromStorage()
+        )
     }
 
     override fun setOnClickForViews() {

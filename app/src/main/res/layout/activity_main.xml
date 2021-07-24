@@ -17,12 +17,12 @@
             android:id="@+id/ll1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvSongName"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginTop="20sp"
                 android:gravity="center"
                 android:lines="1"
@@ -31,23 +31,17 @@
                 android:textColor="@color/white"
                 android:textSize="17dp"
                 android:textStyle="bold" />
+
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/imgMenu"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:layout_below="@+id/ll1"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="30dp"
-            android:src="@drawable/ic_menu" />
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/imgCenter"
             android:layout_width="240dp"
             android:layout_height="240dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="140dp"
+            android:layout_marginTop="230dp"
             android:src="@drawable/ic_cd_music" />
 
 
@@ -102,17 +96,25 @@
                 android:paddingRight="10dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgRepeat"
+                    android:layout_width="60dp"
+                    android:layout_height="40dp"
+                    android:contentDescription="imv_previous"
+                    android:padding="5dp"
+                    android:src="@drawable/ic_repeat_no" />
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgPrevious"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:contentDescription="imv_previous"
                     android:padding="5dp"
                     android:src="@drawable/ic_previous" />
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgPausePlay"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:contentDescription="imv_pause_play"
@@ -121,15 +123,21 @@
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/imgNext"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
                     android:contentDescription="imv_next"
                     android:padding="5dp"
                     android:src="@drawable/ic_next" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/imgMenu"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="0dp"
+                    android:src="@drawable/ic_menu" />
             </androidx.appcompat.widget.LinearLayoutCompat>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
-
 
     </RelativeLayout>
 </layout>

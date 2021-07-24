@@ -16,6 +16,16 @@ class MediaManager(private val context: Context) {
     private var currentIndex = 0
     private var currentSong: SongItem? = null
     private var mediaManager: MediaManager? = null
+    private var isLoop: Boolean = false
+
+
+    fun isLoop(): Boolean {
+        return isLoop
+    }
+
+    fun setLoop(isLoop: Boolean) {
+        this.isLoop = isLoop
+    }
 
 
     fun getInstance(context: Context): MediaManager? {
@@ -59,8 +69,15 @@ class MediaManager(private val context: Context) {
             false
         }
         mPlayer!!.setOnCompletionListener {
-            currentIndex++
-            play()
+            if (isLoop) {
+                Log.d(TAG, "initPlayer:  true")
+                play()
+            } else if (!isLoop) {
+                Log.d(TAG, "initPlayer:  false")
+                currentIndex++
+                play()
+            }
+
         }
     }
 
