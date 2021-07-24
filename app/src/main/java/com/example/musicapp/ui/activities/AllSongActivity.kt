@@ -3,6 +3,7 @@ package com.example.musicapp.ui.activities
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import androidx.core.content.ContentProviderCompat.requireContext
@@ -16,8 +17,10 @@ import com.example.musicapp.databinding.ActivityAllSongBinding
 import com.example.musicapp.extension.showShortToast
 import com.example.musicapp.media.MediaManager
 import com.example.musicapp.model.SongItem
+import com.example.musicapp.util.Const
 
-class AllSongActivity : BaseActivity<ActivityAllSongBinding>(), HandleMyOnclick {
+class AllSongActivity : BaseActivity<ActivityAllSongBinding>(), HandleMyOnclick,
+    View.OnClickListener {
 
     override fun initLayout(): Int = R.layout.activity_all_song
 
@@ -27,7 +30,7 @@ class AllSongActivity : BaseActivity<ActivityAllSongBinding>(), HandleMyOnclick 
     }
 
     override fun setOnClickForViews() {
-
+        binding?.tvMiniGame?.setOnClickListener(this)
     }
 
     override fun initViews() {
@@ -42,18 +45,7 @@ class AllSongActivity : BaseActivity<ActivityAllSongBinding>(), HandleMyOnclick 
     }
 
     private fun setDataForRecyclerView() {
-        val songAdapter = SongAdapter(this)
-        binding.let { it ->
-            it?.rvAllSong.let {
-                it?.adapter = songAdapter
-                it?.layoutManager = LinearLayoutManager(this)
-                it?.setHasFixedSize(true)
-            }
-        }
-        songAdapter.submitList(
-            MediaManager(this).getInstance(this)!!
-                .getAllSongItemFromStorage()
-        )
+
     }
 
 
@@ -70,6 +62,24 @@ class AllSongActivity : BaseActivity<ActivityAllSongBinding>(), HandleMyOnclick 
 
     override fun onLongClick(songItem: SongItem, position: Int) {
         showShortToast(songItem.dataPath)
+    }
+
+    fun cancelSong() {
+        val intent = Intent(Const.ACTION_CANCEL)
+        sendBroadcast(intent)
+    }
+
+    private fun startMiniGame() {
+        val intent = Intent(this@AllSongActivity, MiniGameActivity::class.java)
+        startActivity(intent)
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0?.id) {
+            R.id.tvMiniGame -> {
+                startMiniGame()
+            }
+        }
     }
 
 }

@@ -120,13 +120,8 @@ class MediaManager(private val context: Context) {
     }
 
     fun pause() {
-        playState = if (mPlayer!!.isPlaying) {
-            mPlayer!!.pause()
-            STATE_PAUSE
-        } else {
-            mPlayer!!.start()
-            STATE_PLAYING
-        }
+        mPlayer!!.pause()
+        playState = STATE_PAUSE
     }
 
     fun cancel() {

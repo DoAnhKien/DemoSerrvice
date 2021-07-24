@@ -44,7 +44,8 @@ object Const {
     const val REQUEST_CODE_ACTION_SEARCH_DETAIL_ARTIST = 33
     const val ACTION_SEND_DATA = "ACTION_SEND_DATA"
     const val KEY_TITLE_SONG = "KEY_TITLE_SONG"
-
+    const val FILE_SAVE_HIGHT_SCORE = "data_hight_score"
+    const val KEY_HIGHT_SCORE = "KEY_HIGHT_SCORE"
     const val ACTION_PLAY = "play_music"
     const val ACTION_PAUSE = "pause_music"
     const val ACTION_NEXT = "next_music"

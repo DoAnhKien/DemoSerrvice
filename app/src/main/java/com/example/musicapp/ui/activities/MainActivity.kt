@@ -18,22 +18,27 @@ import android.widget.SeekBar
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.musicapp.R
+import com.example.musicapp.adapter.SongAdapter
 import com.example.musicapp.base.BaseActivity
+import com.example.musicapp.callback.HandleMyOnclick
 import com.example.musicapp.databinding.ActivityMainBinding
+import com.example.musicapp.media.MediaManager
+import com.example.musicapp.model.SongItem
 import com.example.musicapp.service.MusicService
 import com.example.musicapp.util.Const
-import com.example.musicapp.util.Const.MAIN_ACTIVITY_REQUEST_CODE
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.*
 
 
-class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
+class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener, HandleMyOnclick {
     private val STORAGE_PERMISSION = 1000
     private var sbTime: SeekBar? = null
     private var musicService: MusicService? = null
     private val handler = Handler()
+    private var isRun: Boolean = true
 
 
     companion object {
@@ -170,7 +175,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
                 playSong()
             }
             R.id.imgMenu -> {
-                sendMessage()
+                startActivityToGameActivity()
             }
             R.id.imgRepeat -> {
                 changeStateLoop()
@@ -209,10 +214,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
         binding?.imgRepeat?.setImageResource(R.drawable.ic_repeat_one)
     }
 
-    fun sendMessage() {
-        val intent = Intent(this@MainActivity, AllSongActivity::class.java)
-        intent.putExtra("kienda", "kkk")
-        startActivityForResult(intent, MAIN_ACTIVITY_REQUEST_CODE)
+    private fun startActivityToGameActivity() {
+        pauseSong()
+        val intent = Intent(this@MainActivity, MiniGameSongAct::class.java)
+        startActivity(intent)
     }
 
     fun setTitleForSong() {
@@ -298,16 +303,37 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), View.OnClickListener {
     override fun initViews() {
         runAnimationForTextView()
         runAnimationForImageView()
+        setDataForRecyclerView()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == MAIN_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK && data != null) {
-            val position = data.getIntExtra("kienda", 88)
-            musicService?.getMediaManager()?.setCurrentIndex(position)
-            playMusicByPosition()
-            Log.d(TAG, "onActivityResult: ${data.getIntExtra("kienda", 88)}")
+    private fun setDataForRecyclerView() {
+        val songAdapter = SongAdapter(this)
+        binding.let { it ->
+            it?.rvMainAllSong.let {
+                it?.adapter = songAdapter
+                it?.layoutManager = LinearLayoutManager(this)
+                it?.setHasFixedSize(true)
+            }
         }
+        songAdapter.submitList(
+            MediaManager(this).getInstance(this)!!
+                .getAllSongItemFromStorage()
+        )
+    }
+
+
+    override fun onClick(songItem: SongItem, position: Int) {
+        musicService?.getMediaManager()?.setCurrentIndex(position)
+        playMusicByPosition()
+    }
+
+    override fun onLongClick(songItem: SongItem, position: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onResume() {
+        super.onResume()
+        playSong()
     }
 
 

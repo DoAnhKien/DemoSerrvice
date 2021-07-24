@@ -94,4 +94,5 @@ abstract class BaseActivity<T : ViewDataBinding?>(protected var binding: T? = nu
 
 
 
+
 }
