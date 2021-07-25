@@ -34,6 +34,7 @@ class HightScoreActivity : Activity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hight_score)
+        value
         changeTheColorOfTheStatusBar()
         initViews()
     }
@@ -108,6 +109,7 @@ class HightScoreActivity : Activity(), View.OnClickListener {
         get() {
             val intent = intent
             score = intent.getStringExtra(Const.KEY_SCORE)
+            Log.d(TAG, "mmmm: $score ")
             isStatus = intent.getBooleanExtra(Const.KEY_STATUS, false)
         }
 

@@ -1,5 +1,6 @@
 package com.example.musicapp.ui.activities
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.media.MediaPlayer
@@ -32,6 +33,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
     private var btnAnswerD: Button? = null
     private var imvPlayGame: ImageView? = null
     private var llAnswer: LinearLayout? = null
+
     private var arrAllSong: MutableList<SongItem>? = ArrayList<SongItem>()
     private val arrIndex = ArrayList<Int>()
     private val arrIndexAnswer = ArrayList<Int?>()
@@ -44,8 +46,9 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
     private var flagStartGame = false
     private var flagGameOver = false
     private var timeProgress = 0
-    private var score = 0
+    private var score: Int = 0
     private var correctAnswer: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_mini_game)
@@ -71,6 +74,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         for (index in 0..3) {
             arrIndexAnswer.add(index)
         }
+        Log.d(TAG, "initIndexArr: ${arrIndexAnswer.size}")
     }
 
     private fun changeTheColorOfTheStatusBar() {
@@ -103,10 +107,10 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         imvPlayGame!!.setOnClickListener(this)
     }
 
-    fun initPlayer() {
+    private fun initPlayer() {
         mPlayer = MediaPlayer()
         mPlayer!!.setOnPreparedListener {
-            Log.i(
+            Log.e(
                 TAG,
                 "onPrepared...."
             )
@@ -116,11 +120,10 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
             false
         }
         mPlayer!!.setOnCompletionListener {
-            //Sau khi xong 1 bai hat
         }
     }
 
-    fun play(position: Int) {
+    private fun play(position: Int) {
         mPlayer!!.reset()
         try {
             mPlayer!!.setDataSource(this, Uri.parse(arrAllSong!![position].dataPath))
@@ -131,12 +134,12 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         }
     }
 
-    fun stop() {
+    private fun stop() {
         mPlayer!!.stop()
         mPlayer!!.reset()
     }
 
-    fun seekTo(msec: Int) {
+    private fun seekTo(msec: Int) {
         mPlayer!!.seekTo(msec)
         //mPlayer.start();
     }
@@ -154,17 +157,27 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
             arrIndex.shuffle()
             arrIndexAnswer.shuffle()
             arrAllSong?.shuffle()
+
             var position = arrIndex[0]
             var duration: Int = arrAllSong!![position].duration
+
+            Log.d(TAG, "nextSong1 position: $position")
+
             while (duration / 1000 < 50) {
+                Log.d(TAG, "nextSong: duration $duration")
                 position++
                 duration = arrAllSong!![position].duration
             }
+
+            Log.d(TAG, "nextSong2 position: $position")
+
             var answerA: String = arrAllSong!![position].title
             var answerB: String = arrAllSong!![arrIndexAnswer[1]!!].title
             var answerC: String = arrAllSong!![arrIndexAnswer[2]!!].title
             var answerD: String = arrAllSong!![arrIndexAnswer[3]!!].title
-            //Cat chuoi de khi hien thi se khong bi tran` ky tu
+
+            Log.d(TAG, "nextSong: $answerA")
+
             if (answerA.length >= 24) {
                 answerA = answerA.substring(0, 23)
             }
@@ -177,14 +190,20 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
             if (answerD.length >= 24) {
                 answerD = answerD.substring(0, 23)
             }
+
             val answer = arrayOf(answerA, answerB, answerC, answerD)
+
+            Log.d(TAG, "nextSong answerA: ${arrIndexAnswer[0]}")
+            Log.d(TAG, "nextSong answerB: ${arrIndexAnswer[1]}")
+            Log.d(TAG, "nextSong answerC: ${arrIndexAnswer[2]}")
+            Log.d(TAG, "nextSong answerD: ${arrIndexAnswer[3]}")
+
             btnAnswerA!!.text = answer[arrIndexAnswer[0]!!]
             btnAnswerB!!.text = answer[arrIndexAnswer[1]!!]
             btnAnswerC!!.text = answer[arrIndexAnswer[2]!!]
             btnAnswerD!!.text = answer[arrIndexAnswer[3]!!]
             playSong(position)
             correctAnswer = answerA
-        } else {
         }
     }
 
@@ -193,6 +212,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         play(position)
         seekTo(rd!!.nextInt(duration) + 10000)
         arrIndex.removeAt(0)
+        Log.d(TAG, "playSong: ${arrIndex.size}")
     }
 
     private fun stopSong() {
@@ -200,17 +220,20 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         mPlayer!!.stop()
     }
 
-    private val handler: Handler = object : Handler() {
+    private val handler: Handler = @SuppressLint("HandlerLeak")
+    object : Handler() {
+        @SuppressLint("SetTextI18n")
         override fun handleMessage(msg: Message) {
             val what = msg.what
             val flagPlaySong = msg.arg2
             val progress = msg.arg1
             when (what) {
-                UPDATE_TIME_PROGESS -> {
+                UPDATE_TIME_PROGRESS -> {
                     tvTimeProgress!!.text = progress.toString() + ""
                     if (flagPlaySong == FLAG_PLAY_SONG) {
                         llAnswer!!.visibility = View.VISIBLE
                         if (arrAllSong!!.size > 4) {
+                            Log.d(TAG, "handleMessage: 444")
                             nextSong()
                         } else {
                             //SnackBar
@@ -226,15 +249,18 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
             try {
                 Thread.sleep(1000)
                 timeProgress--
+//                Log.d(TAG, "run: $timeProgress")
                 if (timeProgress <= 0) {
+//                    Log.d(TAG, "run1: $timeProgress")
                     if (flagStartGame) {
+//                        Log.d(TAG, "run: run2 $timeProgress")
                         timeProgress = 10
                         flagGameOver = false
                         flagStartGame = false
                         val message = Message()
                         message.arg1 = timeProgress
                         message.arg2 = FLAG_PLAY_SONG
-                        message.what = UPDATE_TIME_PROGESS
+                        message.what = UPDATE_TIME_PROGRESS
                         message.target = handler
                         message.sendToTarget()
                     } else {
@@ -246,8 +272,9 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
                 } else {
                     val message = Message()
                     message.arg1 = timeProgress
+//                    Log.d(TAG, "run3: ${message.arg1} ")
                     message.arg2 = FLAG_TURN_OFF_SONG
-                    message.what = UPDATE_TIME_PROGESS
+                    message.what = UPDATE_TIME_PROGRESS
                     message.target = handler
                     message.sendToTarget()
                 }
@@ -264,7 +291,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         }
         if (flagGameOver) {
             stop()
-            val hightScore = readHightScore()
+            val hightScore = readHighScore()
             if (hightScore < score) {
                 showGameOver(true)
             } else {
@@ -273,19 +300,19 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         }
     }
 
-    fun readHightScore(): Int {
+    private fun readHighScore(): Int {
         val pre = getSharedPreferences(Const.FILE_SAVE_HIGHT_SCORE, MODE_PRIVATE)
         return pre.getInt(Const.KEY_HIGHT_SCORE, -1)
     }
 
-    fun writeHightScore(hightScore: Int) {
+    private fun writeHighScore(highScore: Int) {
         val pref = getSharedPreferences(Const.FILE_SAVE_HIGHT_SCORE, MODE_PRIVATE)
         val editor = pref.edit()
-        editor.putInt(Const.KEY_HIGHT_SCORE, hightScore)
+        editor.putInt(Const.KEY_HIGHT_SCORE, highScore)
         editor.apply()
     }
 
-    fun showGameOver(isStatus: Boolean) {
+    private fun showGameOver(isStatus: Boolean) {
         stopSong()
         val intentGameOver = Intent()
         intentGameOver.setClass(this@MiniGameSongAct, HightScoreActivity::class.java)
@@ -293,7 +320,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         intentGameOver.putExtra(Const.KEY_STATUS, isStatus)
         startActivityForResult(intentGameOver, Const.KEY_OVER)
         if (isStatus) {
-            writeHightScore(score)
+            writeHighScore(score)
         }
     }
 
@@ -307,6 +334,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
                 tvScore?.text = score.toString()
                 startThread()
                 if (arrAllSong!!.size > 4) {
+                    Log.d(TAG, "onActivityResult: ")
                     nextSong()
                 } else {
                     //SnackBar
@@ -320,6 +348,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
     }
 
     override fun onClick(v: View) {
+        Log.d(TAG, "onClick: ")
         var userAnswer = ""
         when (v.id) {
             R.id.imv_start_mini_game -> {
@@ -349,6 +378,7 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
     }
 
     private fun handlerQuestion(userAnswer: String) {
+        Log.d(TAG, "handlerQuestion: ")
         if (userAnswer == correctAnswer) {
             score++
             tvScore?.text = score.toString()
@@ -365,7 +395,8 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
         }
     }
 
-    fun pause() {
+    private fun pause() {
+        Log.d(TAG, "pause: ")
         isPause = true
         if (mPlayer!!.isPlaying) {
             mPlayer!!.pause()
@@ -392,9 +423,9 @@ class MiniGameSongAct : Activity(), Runnable, View.OnClickListener {
     }
 
     companion object {
-        private const val UPDATE_TIME_PROGESS = 0
+        private const val UPDATE_TIME_PROGRESS = 0
         private const val FLAG_TURN_OFF_SONG = 0
         private const val FLAG_PLAY_SONG = 1
-        protected const val TAG = "MiniGameSongAct"
+        private const val TAG = "MiniGameSongAct"
     }
 }
